@@ -228,7 +228,8 @@
                 goto: empty,
                 prev: empty,
                 next: empty,
-                showMenu: empty
+                showMenu: empty,
+                showSlideNumber: empty
             };
         }
         
@@ -623,6 +624,24 @@
             // `position: absolute` wouldn't work anymore in it.
             document.body.appendChild(menu);
         };
+
+        // `showSlideNumber` API function adds the number to every slide
+        // on the bottom right.
+        var showSlideNumber = function() {
+            var currentIndex = steps.indexOf( activeStep ),
+                el = document.createElement('div');
+
+            el.textContent = currentIndex + 1;
+
+            // Add an event listener to change when the slide changes
+            window.addEventListener('hashchange', function() {
+                var currentIndex = steps.indexOf( activeStep );
+                el.textContent = currentIndex + 1;
+            });
+
+            // And add the element to the body
+            document.body.appendChild(el);
+        };
         
         // Adding some useful classes to step elements.
         //
@@ -696,7 +715,8 @@
             goto: goto,
             next: next,
             prev: prev,
-            showMenu: showMenu
+            showMenu: showMenu,
+            showSlideNumber: showSlideNumber
         });
 
     };
