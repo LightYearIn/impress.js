@@ -721,6 +721,9 @@ a:focus {
     border: 1px solid #ccc;
     cursor: pointer;
 }
+.menu-item-selected{
+	opacity: 1; font-weight: 500 !important; color:red;
+}
 
 /*
     And as the last thing there is a workaround for quite strange bug.
