@@ -252,6 +252,9 @@
         // array of step elements
         var steps = null;
         
+        //array of menu elements
+        var menus = null;
+        
         // configuration options
         var config = null;
         
@@ -553,6 +556,9 @@
         // `prev` API function goes to previous step (in document order)
         var prev = function () {
             var prev = steps.indexOf( activeStep ) - 1;
+             
+            highlightMenu(prev >= 0 ? prev : steps.length-1);
+             
             prev = prev >= 0 ? steps[ prev ] : steps[ steps.length-1 ];
             
             return goto(prev);
@@ -561,6 +567,9 @@
         // `next` API function goes to next step (in document order)
         var next = function () {
             var next = steps.indexOf( activeStep ) + 1;
+            
+            highlightMenu(next < steps.length ? next : 0); 
+            
             next = next < steps.length ? steps[ next ] : steps[ 0 ];
             
             return goto(next);
@@ -570,6 +579,22 @@
         // @see http://stackoverflow.com/a/1026087/851498
         var capitalize = function( str ) {
             return str.charAt(0).toUpperCase() + str.slice(1);
+        };
+
+        var highlightMenu = function(menu){
+        	if(menus != null){
+        		for(var i=0; i<menus.length; i++){
+        			if(menus[i].classList.contains("menu-item-selected"))
+        				menus[i].classList.remove("menu-item-selected");
+        		}
+        		if (typeof menu === "number") {
+        	        menus[menu].classList.add("menu-item-selected");
+            	}/* else if (typeof menu === "string") {
+                	byId(menu).classList.add("menu-item-selected");
+            	} else if (typeof menu === "object") {
+            		menu.classList.add("menu-item-selected");
+            	}*/
+        	}
         };
 
         // `showMenu` API function creates the menu
@@ -609,6 +634,7 @@
                 (function( index ) {
                     newEl.addEventListener('click', function() {
                         goto(index);
+                        highlightMenu(index); 
                     });
                 }( index ));
 
@@ -623,6 +649,7 @@
             // Appending it to #impress would mess things up, since
             // `position: absolute` wouldn't work anymore in it.
             document.body.appendChild(menu);
+	    menus = $$(".menu-item", menu);
         };
 
         // `showSlideNumber` API function adds the number to every slide
